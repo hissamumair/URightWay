@@ -1,17 +1,19 @@
 import React from "react";
-import { View, StyleSheet, ScrollView, Image } from "react-native";
+import { View, StyleSheet, ScrollView, Image, SafeAreaView,TouchableOpacity } from "react-native";
 import { Card, Text, Searchbar, Badge } from "react-native-paper";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import BottomNavigator from "../../Navigation/BottomNavigator";
+import { useNavigation } from "@react-navigation/native"; // Import useNavigation
 
 const TaskManagementApp = () => {
   const [searchQuery, setSearchQuery] = React.useState("");
+  const navigation = useNavigation(); // Initialize navigation
 
   const StatusCard = () => (
     <Card style={styles.statusCard}>
-      <View style={styles.statusGrid}>
+      {/* <View style={styles.statusGrid}> */}
         {/* First Row */}
         <View style={styles.statusRow}>
-          <View style={[styles.statusItem, styles.columnBorder]}>
+          <View style={[styles.statusItem, styles.columnBorder, styles.leftAlignedItem]}>
             <Text style={styles.labelText}>Status</Text>
             <View style={styles.statusHeader}>
               <View style={styles.dotContainer}>
@@ -20,11 +22,11 @@ const TaskManagementApp = () => {
               </View>
             </View>
           </View>
-          <View style={[styles.statusItem, styles.columnBorder]}>
+          <View style={[styles.statusItem, styles.columnBorder, styles.leftAlignedItem]}>
             <Text style={styles.labelText}>Start date</Text>
             <Text style={styles.valueText}>14 Feb, 2025</Text>
           </View>
-          <View style={styles.statusItem}>
+          <View style={[styles.statusItem, styles.leftAlignedItem]}>
             <Text style={styles.labelText}>End date</Text>
             <Text style={styles.valueText}>14 March, 2025</Text>
           </View>
@@ -35,34 +37,33 @@ const TaskManagementApp = () => {
 
         {/* Second Row */}
         <View style={styles.statusRow}>
-          <View style={[styles.statusItem, styles.columnBorder]}>
+          <View style={[styles.statusItem, styles.columnBorder, styles.leftAlignedItem]}>
             <Text style={styles.labelText}>Completed Tasks</Text>
             <Text style={styles.valueText}>3</Text>
           </View>
-          <View style={[styles.statusItem, styles.columnBorder]}>
+          <View style={[styles.statusItem, styles.columnBorder, styles.leftAlignedItem]}>
             <Text style={styles.labelText}>In Progress</Text>
             <Text style={styles.valueText}>6</Text>
           </View>
-          <View style={styles.statusItem}>
+          <View style={[styles.statusItem, styles.leftAlignedItem]}>
             <Text style={styles.labelText}>Pending Tasks</Text>
             <Text style={styles.valueText}>11</Text>
           </View>
         </View>
-      </View>
+      {/* </View> */}
     </Card>
   );
 
-  const TaskCard = ({ title, status, items }) => {
-    // Get the badge color based on status
+  const TaskCard = ({ title, status, items,navigateTo }) => {
     const badgeColor = getStatusColor(status);
     
-    // Set text color for the badge to black for all tasks
     const badgeTextColor = "black";
     
     return (
+      <TouchableOpacity onPress={() => navigation.navigate("DiaryStack", { screen: "IslamicDuty" })}> 
+
       <Card style={styles.taskCard}>
         <View style={styles.taskContent}>
-          {/* Status Badge at the top */}
           <Badge 
             style={[
               styles.badge, 
@@ -72,7 +73,6 @@ const TaskManagementApp = () => {
             <Text style={{ color: badgeTextColor }}>{status}</Text>
           </Badge>
           
-          {/* Title and Items */}
           <View style={styles.taskDetails}>
             <Text style={styles.taskTitle}>{title}</Text>
             <View style={styles.itemsContainer}>
@@ -96,6 +96,7 @@ const TaskManagementApp = () => {
           </View>
         </View>
       </Card>
+      </TouchableOpacity>
     );
   };
 
@@ -113,69 +114,90 @@ const TaskManagementApp = () => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      {/* Title and Subtitle */}
-      <View style={styles.headerContainer}>
-        <Text style={styles.title}>My Diary</Text>
-        <Text style={styles.subtitle}>
-          Track, Reflect, and Grow – Your Personal Development Journey
-        </Text>
-      </View>
+    <SafeAreaView style={styles.mainContainer}>
+      <View style={styles.contentContainer}>
+        <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent}>
+          {/* Title and Subtitle */}
+          <View style={styles.headerContainer}>
+            <Text style={styles.title}>My Diary</Text>
+            <Text style={styles.subtitle}>
+              Track, Reflect, and Grow – Your Personal Development Journey
+            </Text>
+          </View>
 
-      <StatusCard />
-      <Text style={{ fontSize: 16, fontWeight: "600", color: "white" }}>
-      Stay True, Stay Honest Complete Your Tasks with Integrity.       </Text>
-      <View style={styles.searchContainer}>
-        <View style={styles.searchBarContainer}>
-          <Searchbar
-            placeholder="Search Topic"
-            onChangeText={setSearchQuery}
-            value={searchQuery}
-            style={styles.searchBar}
-            iconColor="#fff"
-            inputStyle={styles.searchInput}
-            placeholderTextColor="#fff"
+          <StatusCard />
+          <Text style={{ fontSize: 16, fontWeight: "600", color: "white" }}>
+            Stay True, Stay Honest Complete Your Tasks with Integrity.
+          </Text>
+          
+          <View style={styles.searchContainer}>
+            <View style={styles.searchBarContainer}>
+              <Searchbar
+                placeholder="Search Topic"
+                onChangeText={setSearchQuery}
+                value={searchQuery}
+                style={styles.searchBar}
+                iconColor="#fff"
+                inputStyle={styles.searchInput}
+                placeholderTextColor="#fff"
+              />
+              <Image
+                source={require("./../../Asssets/Images/filter.png")}
+                style={styles.filterIcon}
+              />
+            </View>
+          </View>
+          <TaskCard
+            title="Islamic Duties"
+            status="Completed"
+            items={["Prayers", "Recitation", "Drood Pak", "Reminder", "Surat Un Nabi"]}
+            navigateTo="IslamicDuty" // Pass the screen name here
+
           />
-          <Image
-            source={require("./../../Asssets/Images/filter.png")}
-            style={styles.filterIcon}
+          <TaskCard
+            title="Daily Exercise"
+            status="In Progress"
+            items={["Morning Walk", "Yoga", "Gym", "Evening Stretches"]}
           />
-        </View>
+
+          <TaskCard
+            title="Work Projects"
+            status="Pending"
+            items={["Client Meeting", "Project Review", "Documentation", "Team Sync"]}
+          />
+
+          <TaskCard
+            title="Personal Goals"
+            status="In Progress"
+            items={["Reading", "Meditation", "Journal Writing", "Skill Development"]}
+          />
+
+     
+          
+          <View style={styles.bottomPadding} />
+        </ScrollView>
       </View>
-
-      {/* Task Cards */}
-      <TaskCard
-        title="Daily Exercise"
-        status="In Progress"
-        items={["Morning Walk", "Yoga", "Gym", "Evening Stretches"]}
-      />
-
-      <TaskCard
-        title="Work Projects"
-        status="Pending"
-        items={["Client Meeting", "Project Review", "Documentation", "Team Sync"]}
-      />
-
-      <TaskCard
-        title="Personal Goals"
-        status="In Progress"
-        items={["Reading", "Meditation", "Journal Writing", "Skill Development"]}
-      />
-
-      <TaskCard
-        title="Islamic Duties"
-        status="Completed"
-        items={["Prayers", "Recitation", "Drood Pak", "Reminder", "Surat Un Nabi"]}
-      />
-    </ScrollView>
+      
+      
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+    backgroundColor: "#0033cc",
+  },
+  contentContainer: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     backgroundColor: "#0033cc",
+  },
+  scrollContent: {
     paddingHorizontal: 16,
+    paddingBottom: 16,
   },
   headerContainer: {
     marginTop: "20%",
@@ -218,8 +240,10 @@ const styles = StyleSheet.create({
   },
   statusItem: {
     flex: 1,
-    alignItems: "center",
     paddingHorizontal: 8,
+  },
+  leftAlignedItem: {
+    alignItems: "flex-start", // Left align the text within each item
   },
   columnBorder: {
     borderRightWidth: 1,
@@ -248,7 +272,6 @@ const styles = StyleSheet.create({
   statusText: {
     color: "#fff",
     fontSize: 16,
-    
   },
   labelText: {
     color: "white",
@@ -256,7 +279,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   valueText: {
-    // backgroundColor:"red",
     color: "#fff",
     fontSize: 16,
     fontWeight: "bold",
@@ -323,7 +345,6 @@ const styles = StyleSheet.create({
   badge: {
     borderRadius: 12,
     paddingHorizontal: 8,
-    // backgroundColor:"red",
     alignSelf: "flex-start",
   },
   forwardIconContainer: {
@@ -350,6 +371,19 @@ const styles = StyleSheet.create({
     opacity: 0.7,
     fontSize: 14,
   },
+  bottomPadding: {
+    height: 20, // Extra padding to ensure content isn't hidden behind the bottom tab
+  },
+  bottomTabContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: '#0033cc',
+    marginHorizontal: 0, // Reduced bottom padding to move icons up
+  },
 });
+
+
 
 export default TaskManagementApp;
