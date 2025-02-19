@@ -7,6 +7,7 @@ import Home from '../Screens/Home/Home';
 import Notifications from '../Screens/Home/Notifications';
 import MyDiary from '../Screens/Home/MyDiary';
 import Profile from '../Screens/Home/Profile';
+import DiaryStack from './DiaryStack/DiaryStack';
 
 const Tab = createBottomTabNavigator();
 const isIOS=Platform.OS==="ios";
@@ -17,7 +18,7 @@ const BottomNavigator = () => {
         headerShown: false,
         tabBarShowLabel: true,
         tabBarStyle: { 
-          backgroundColor: '#0033cc', // Blue background color
+          backgroundColor: '#0537DE', // Blue background color
           height: 80,
          
           paddingBottom:isIOS ? 50 : 20,
@@ -76,7 +77,7 @@ const BottomNavigator = () => {
       />
       <Tab.Screen 
         name="MyDiary" 
-        component={MyDiary}
+        component={DiaryStack}
         options={{
           tabBarLabel: 'My Diary'
         }}

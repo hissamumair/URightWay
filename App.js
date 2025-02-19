@@ -16,11 +16,7 @@ export default function App() {
           component={BottomNavigator}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
-          name="DiaryStack"
-          component={DiaryStack}
-          options={{ headerShown: false }}
-        />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -4,7 +4,7 @@ import { Card, Text, Searchbar, Badge } from "react-native-paper";
 import BottomNavigator from "../../Navigation/BottomNavigator";
 import { useNavigation } from "@react-navigation/native"; // Import useNavigation
 
-const TaskManagementApp = () => {
+const MyDiary = () => {
   const [searchQuery, setSearchQuery] = React.useState("");
   const navigation = useNavigation(); // Initialize navigation
 
@@ -60,7 +60,7 @@ const TaskManagementApp = () => {
     const badgeTextColor = "black";
     
     return (
-      <TouchableOpacity onPress={() => navigation.navigate("DiaryStack", { screen: "IslamicDuty" })}> 
+      <TouchableOpacity onPress={() => navigation.navigate(navigateTo)}>
 
       <Card style={styles.taskCard}>
         <View style={styles.taskContent}>
@@ -172,9 +172,9 @@ const TaskManagementApp = () => {
             items={["Reading", "Meditation", "Journal Writing", "Skill Development"]}
           />
 
-     
           
           <View style={styles.bottomPadding} />
+
         </ScrollView>
       </View>
       
@@ -386,4 +386,4 @@ const styles = StyleSheet.create({
 
 
 
-export default TaskManagementApp;
+export default MyDiary;
