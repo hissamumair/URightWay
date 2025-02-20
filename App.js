@@ -1,17 +1,22 @@
+// App.js
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack"; // Use native-stack
-import HomeScreen from "./src/Screens/Home/HomeScreen";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import BottomNavigator from "./src/Navigation/BottomNavigator";
+import DiaryStack from "./src/Navigation/DiaryStack/DiaryStack";
 
-const Stack = createNativeStackNavigator(); 
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="HomeScreen" component={HomeScreen} 
-                 options={{ headerShown: false }}  // Hide the header
-/>
+        <Stack.Screen
+          name="BottomTabs"
+          component={BottomNavigator}
+          options={{ headerShown: false }}
+        />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );
