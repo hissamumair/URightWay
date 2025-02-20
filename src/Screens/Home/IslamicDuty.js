@@ -10,14 +10,13 @@ import {
 import {
   Appbar,
   Text,
-  Button,
   Menu,
   Provider as PaperProvider,
-  BottomNavigation,
 } from 'react-native-paper';
 import {DefaultTheme} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomButton from './../../Components/Button/Button';
+
 const theme = {
   ...DefaultTheme,
   colors: {
@@ -107,7 +106,17 @@ const IslamicDutiesScreen = ({navigation}) => {
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(prev => prev + 1);
       setCurrentStep(prev => prev + 1);
+    } else {
+      // Handle form submission here
+      handleSubmit();
     }
+  };
+
+  const handleSubmit = () => {
+    // Add your submission logic here
+    console.log('Form submitted with answers:', answers);
+    // You might want to navigate to a confirmation screen
+    // navigation.navigate('ConfirmationScreen', { answers });
   };
 
   const handlePreviousStep = () => {
@@ -182,7 +191,7 @@ const IslamicDutiesScreen = ({navigation}) => {
                   <Text style={styles.dropdownButtonText}>
                     {answers[question.id]?.method || 'Select Option'}
                   </Text>
-                  <Icon name="chevron-down" size={24} color="white"style={{marginTop:-7}}/>
+                  <Icon name="chevron-down" size={24} color="white" style={{marginTop:-7}}/>
                 </TouchableOpacity>
               }>
               {question.options.map(option => (
@@ -198,6 +207,9 @@ const IslamicDutiesScreen = ({navigation}) => {
       </View>
     );
   };
+
+  // Check if we're on the last question
+  const isLastQuestion = currentQuestion === questions.length - 1;
 
   return (
     <PaperProvider theme={theme}>
@@ -245,21 +257,18 @@ const IslamicDutiesScreen = ({navigation}) => {
               title={'Previous Step'}
               backgroundColor={'#2562FF'}
               onPress={handlePreviousStep}
-           
               width={170}
               height={50}
               fontSize={14}
             />
             <CustomButton
-              title={'Next'}
+              title={isLastQuestion ? 'Submit' : 'Next'}
               onPress={handleNextStep}
-
               width={170}
               backgroundColor={'white'}
               fontSize={15}
               textColor={'black'}
               height={50}
-
             />
           </View>
         </SafeAreaView>
@@ -395,7 +404,6 @@ const styles = StyleSheet.create({
     marginLeft: 12,
   },
   dropdownContainer: {
-    // marginBottom: 24,
     paddingHorizontal: 10,
   },
   dropdownButton: {
@@ -413,39 +421,6 @@ const styles = StyleSheet.create({
   dropdownButtonText: {
     fontSize: 10,
     color: 'white',
-    // textAlign: 'center',
-  },
-  footer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: 16,
-    paddingBottom: Platform.OS === 'ios' ? 24 : 16,
-  },
-  buttonContent: {
-    height: 40,
-  },
-  previousButton: {
-    backgroundColor: '#2671fc',
-    paddingVertical: 8,
-    borderRadius: 30,
-    width: '45%',
-  },
-  previousButtonText: {
-    color: 'white',
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-  nextButton: {
-    backgroundColor: 'white',
-    paddingVertical: 8,
-    paddingHorizontal: 24,
-    borderRadius: 30,
-    width: '45%',
-  },
-  nextButtonText: {
-    color: '#0047cc',
-    fontSize: 14,
-    fontWeight: 'bold',
   },
 });
 
